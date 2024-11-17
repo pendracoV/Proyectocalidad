@@ -8,18 +8,28 @@
 <body>
     <header>
         <div class="container">
-          <h1 class="logo"></h1>
+          <h4 class="logo">ADMIN</h4>
     
           <nav>
             <ul>
               <li><a href="{{ url_for('dashboard_admin') }}">Home</a></li>
+              <li><a href="{{ url_for('dashboard_admin') }}">Historial</a></li>
               <li><a href="{{ url_for('auth.logout') }}">Cerrar Sesión</a></li>
             </ul>
           </nav>
         </div>
       </header>
-      <div class="titulo">
-        <h1>Bienvenido al Panel de Administrador</h1>
+      <div class="container-dashboard">
+        <h2 class=" titulo">Tipos de evaluacion</h2>
+        <div class="container-selection">
+            <ul class="lista">
+              <ol>Modelo ISO-25000 <a href="{{ url_for('iso25000_admin') }}"><button class="button-list">Ingresar</button></a></ol>
+              <ol>Modelo IEEE-730‎ ‎ ‎ ‎  <a href="{{ url_for('ieee730_admin') }}"><button class="button-list">Ingresar</button></a></ol>
+              <ol>Modelo FURPS  ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎<a href="{{ url_for('furps_admin') }}"><button class="button-list">Ingresar</button></a></ol>
+              <ol>Modelo MCCALL ‎ ‎ ‎ ‎  <a href="{{ url_for('mccall_admin') }}"><button class="button-list">Ingresar</button></a></ol>
+            </ul>
+        </div>
+
       </div>
 
     

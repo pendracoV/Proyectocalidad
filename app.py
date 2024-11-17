@@ -32,9 +32,41 @@ def dashboard_user():
     return render_template('dashboard_user.html')
 
 
+@app.route('/admin/iso25000_admin')
+def iso25000_admin():
+    return render_template("admin/iso25000_admin.html") 
+
+@app.route('/admin/ieee730_admin')
+def ieee730_admin():
+    return render_template ( "admin/ieee730_admin.html")
+
+@app.route('/admin/furps_admin')
+def furps_admin():
+    return render_template ("admin/furps_admin.html")
+
+@app.route('/admin/mccall_admin')
+def mccall_admin():
+    return render_template ("admin/mccall_admin.html")
+
+@app.route('/user/iso25000_user')
+def iso25000_user():
+    return render_template ("user/iso25000_user.html")
+
+@app.route('/user/ieee730_user')
+def ieee730_user():
+    return render_template ("user/ieee730_user.html")
+
+@app.route('/user/furps_user')
+def furps_user():
+    return render_template ("user/furps_user.html")
+
+@app.route('/user/mccall_user')
+def mccall_user():
+    return render_template ("user/mccall_user.html")
+
 @app.route('/')
 def index():
-    return render_template('login.html')
+    return render_template ('login.html')
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -1,9 +1,16 @@
-@import url('https://fonts.googleapis.com/css?family=Work+Sans:400,600');
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+
 body {
+  
 	margin: 0;
-	background: #222;
-	font-family: 'Work Sans', sans-serif;
+  background-color: #ffffff;
+  background-image: radial-gradient(#15cddd 0.9500000000000001px, #ffffff 0.9500000000000001px);
+  background-size: 19px 19px;
+  font-family: 'Montserrat', 'Raleway', sans-serif;
 	font-weight: 800;
+
+  
 }
 
 .container {
@@ -16,6 +23,7 @@ header {
 }
 
 header::after {
+  font-family: 'Raleway', sans-serif;
   content: '';
   display: table;
   clear: both;
@@ -73,5 +81,86 @@ nav a:hover::before {
 }
 
 .titulo{
-    text-align: center;
+  font-family: 'Raleway', sans-serif;
+  text-align: center;
 }
+
+
+.container-dashboard{
+font-family: 'Raleway', sans-serif;
+height: 520px;
+width: 700px;
+background-color: rgba(255,255,255,0.13);
+position: absolute;
+transform: translate(-50%,-50%);
+top: 53%;
+left: 50%;
+border-radius: 10px;
+backdrop-filter: blur(10px);
+border: 2px solid rgba(255,255,255,0.1);
+box-shadow: 0 0 40px rgba(175, 169, 224, 0.6);
+
+}
+
+.container-selection{
+  display: flex;
+  flex-direction: column; /* Coloca los elementos en una columna */
+  justify-content: center; /* Centrar verticalmente los elementos dentro del contenedor */
+  align-items: center; /* Centrar horizontalmente los elementos dentro del contenedor */ 
+  padding: 20px;
+  margin-top: 100px;
+  margin: 100px;
+  height: 200px;
+
+}
+
+.lista{
+  display: flex;
+  flex-direction: column; /* Coloca los elementos en una columna *//* Centrar verticalmente los elementos dentro del contenedor */
+
+  gap: 20px; /* Espaciado entre los elementos */
+  padding: 20px;
+
+}
+
+.button-list {
+  font-family: 'Raleway', sans-serif;
+  width: 5.5em;
+  height: 1.3em;
+  margin: 0.5em;
+  background-image: url('/static/images/pluma.png');
+  background-size: cover;
+  background: black;
+  color: white;
+  border: none;
+  border-radius: 0.625em;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+ }
+ 
+ button:hover {
+  color: black;
+ }
+ 
+ button:after {
+  content: "";
+  background: white;
+  position: absolute;
+  z-index: -1;
+  left: -20%;
+  right: -20%;
+  top: 0;
+  bottom: 0;
+  transform: skewX(-45deg) scale(0, 1);
+  transition: all 0.5s;
+ }
+ 
+ button:hover:after {
+  transform: skewX(-45deg) scale(1, 1);
+  -webkit-transition: all 0.5s;
+  transition: all 0.5s;
+ }
