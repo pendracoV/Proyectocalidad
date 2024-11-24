@@ -1,0 +1,54 @@
+{% extends 'base_admin.html' %}
+
+{% block content %}
+
+<div class="container-preguntas">
+    <h1>Preguntas para el Aspecto: {{ aspecto.nombre }}</h1>
+    <p>{{ aspecto.descripcion }}</p>
+
+    <!-- Mostrar preguntas existentes -->
+    <h3>Preguntas Existentes:</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Texto de la Pregunta</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for pregunta in preguntas %}
+        <tr>
+          <td>{{ pregunta.idpregunta }}</td>
+          <td>{{ pregunta.textopregunta }}</td>
+          <td>
+            <!-- Botón para editar -->
+            <a href="{{ url_for('aspectos.editar_pregunta', idpregunta=pregunta.idpregunta) }}">
+                <button class="button-list">Editar</button>
+            </a>
+            
+            <!-- Botón para eliminar -->
+            <form action="{{ url_for('aspectos.eliminar_pregunta', idpregunta=pregunta.idpregunta) }}" method="POST" style="display:inline;">
+                <button type="submit" class="button-list" onclick="return confirm('¿Estás seguro de eliminar esta pregunta?');">
+                    Eliminar
+                </button>
+            </form>
+        </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <!-- Formulario para agregar nuevas preguntas -->
+    <h3>Agregar una Nueva Pregunta</h3>
+
+  <a href="{{ url_for('aspectos.agregar_pregunta', idaspecto=aspecto.idaspecto) }}">
+    <button class="button-list">Agregar pregunta</button>
+  </a>
+
+</div>
+
+
+{% endblock %}
+
+
+

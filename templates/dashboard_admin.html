@@ -1,37 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+{% extends 'base_admin.html' %}
 
-    <title>Usuario Dashboard</title>
+{% block content %}
+<head>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/style_admin.css') }}">
 </head>
-<body>
-    <header>
-        <div class="container">
-          <h4 class="logo">ADMIN</h4>
-    
-          <nav>
-            <ul>
-              <li><a href="{{ url_for('dashboard_admin') }}">Home</a></li>
-              <li><a href="{{ url_for('dashboard_admin') }}">Historial</a></li>
-              <li><a href="{{ url_for('auth.logout') }}">Cerrar Sesión</a></li>
-            </ul>
-          </nav>
-        </div>
-      </header>
-      <div class="container-dashboard">
-        <h2 class=" titulo">Tipos de evaluacion</h2>
-        <div class="container-selection">
-            <ul class="lista">
-              <ol>Modelo ISO-25000 <a href="{{ url_for('iso25000_admin') }}"><button class="button-list">Ingresar</button></a></ol>
-              <ol>Modelo IEEE-730‎ ‎ ‎ ‎  <a href="{{ url_for('ieee730_admin') }}"><button class="button-list">Ingresar</button></a></ol>
-              <ol>Modelo FURPS  ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎<a href="{{ url_for('furps_admin') }}"><button class="button-list">Ingresar</button></a></ol>
-              <ol>Modelo MCCALL ‎ ‎ ‎ ‎  <a href="{{ url_for('mccall_admin') }}"><button class="button-list">Ingresar</button></a></ol>
-            </ul>
-        </div>
-
-      </div>
-
-    
-</body>
-</html>
+<div class="container-selection">
+    <h2 class="titulo">Tipos de evaluación</h2>
+    <ul class="lista">
+        <li>
+            Modelo ISO-25000 
+            <a href="{{ url_for('dashboard.seleccionar_modelo', idmodelo=2) }}">
+                <button class="button-list">Ingresar</button>
+            </a>
+        </li>
+        <li>
+            Modelo IEEE-730 
+            <a href="{{ url_for('dashboard.seleccionar_modelo', idmodelo=3) }}">
+                <button class="button-list">Ingresar</button>
+            </a>
+        </li>
+        <li>
+            Modelo FURPS  
+            <a href="{{ url_for('dashboard.seleccionar_modelo', idmodelo=1) }}">
+                <button class="button-list">Ingresar</button>
+            </a>
+        </li>
+        <li>
+            Modelo MCCALL  
+            <a href="{{ url_for('dashboard.seleccionar_modelo', idmodelo=4) }}">
+                <button class="button-list">Ingresar</button>
+            </a>
+        </li>
+    </ul>
+</div>
+{% endblock %}

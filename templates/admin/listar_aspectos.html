@@ -1,0 +1,59 @@
+{% extends 'base_admin.html' %}
+
+{% block content %}
+
+<div class="container-preguntas">
+    <h1>Modelo: {{ modelo.nombre }}</h1>
+    <p>{{ modelo.descripcion }}</p>
+
+    <!-- Mostrar aspectos relacionados -->
+    <h3>Aspectos del Modelo:</h3>
+    {% if aspectos %}
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for aspecto in aspectos %}
+                <tr>
+                    <td>{{ aspecto.idaspecto }}</td>
+                    <td>{{ aspecto.nombre }}</td>
+                    <td>{{ aspecto.descripcion }}</td>
+                    <td>
+                        <!-- Botón para listar preguntas -->
+                        <a href="{{ url_for('aspectos.listar_preguntas', idaspecto=aspecto.idaspecto) }}">
+                            <button class="button-list">Ver Preguntas</button>
+                        </a>
+
+                        <!-- Botón para editar aspecto -->
+                        <a href="{{ url_for('aspectos.editar_aspecto', idmodelo=modelo.idmodelo, idaspecto=aspecto.idaspecto) }}">
+                            <button class="button-list">Editar</button>
+                        </a>
+
+                        <!-- Botón para eliminar aspecto -->
+                        <form action="{{ url_for('aspectos.eliminar_aspecto', idmodelo=modelo.idmodelo, idaspecto=aspecto.idaspecto) }}" method="POST" style="display:inline;">
+                            <button type="submit" class="button-list" onclick="return confirm('¿Estás seguro de eliminar este aspecto?');">
+                                Eliminar
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No hay aspectos registrados para este modelo.</p>
+    {% endif %}
+
+    <!-- Botón para agregar un nuevo aspecto -->
+    <a href="{{ url_for('aspectos.agregar_aspecto', idmodelo=modelo.idmodelo) }}">
+        <button class="button-list">Agregar Nuevo Aspecto</button>
+    </a>
+</div>
+
+{% endblock %}

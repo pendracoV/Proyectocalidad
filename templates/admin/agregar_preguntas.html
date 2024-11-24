@@ -1,0 +1,50 @@
+{% extends 'base_admin.html' %}
+
+{% block content %}
+
+<div class="container-preguntas">
+  <h1>Agregar Pregunta para el Aspecto: {{ aspecto.nombre }}</h1>
+  <p>{{ aspecto.descripcion }}</p>
+
+  <!-- Formulario para agregar nueva pregunta -->
+  <form id="agregarPreguntaForm" action="{{ url_for('aspectos.agregar_pregunta', idaspecto=aspecto.idaspecto) }}" method="POST">
+      <label for="textopregunta">Texto de la Pregunta:</label>
+      <textarea id="textopregunta" name="textopregunta" required></textarea>
+      <button type="submit" class="button-list">Agregar Pregunta</button>
+  </form>
+
+  <a href="{{ url_for('aspectos.listar_preguntas', idaspecto=aspecto.idaspecto) }}">
+    <button class="button-list">Regresar a Preguntas</button>
+</a>
+</div>
+
+<script>
+  // Captura el evento de envío del formulario
+  document.getElementById('agregarPreguntaForm').addEventListener('submit', function(event) {
+    // Evitar el envío directo del formulario para manejar la lógica con JS
+    event.preventDefault();
+
+    // Crear un formulario y enviarlo manualmente usando fetch
+    const formData = new FormData(this);
+    fetch(this.action, {
+      method: this.method,
+      body: formData
+    })
+    .then(response => {
+      if (response.ok) {
+        // Mostrar una alerta de éxito
+        alert('¡Pregunta agregada exitosamente!');
+        // Redirigir al usuario a la página de preguntas
+        window.location.href = "{{ url_for('aspectos.listar_preguntas', idaspecto=aspecto.idaspecto) }}";
+      } else {
+        // Manejar errores en caso de que ocurran
+        alert('Ocurrió un error al agregar la pregunta. Inténtalo de nuevo.');
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert('Hubo un problema al procesar tu solicitud. Por favor, inténtalo nuevamente.');
+    });
+  });
+</script>
+{% endblock %}

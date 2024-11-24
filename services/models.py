@@ -1,8 +1,11 @@
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
+from sqlalchemy.orm import relationship
 
 db = SQLAlchemy()
+
+
 
 class User(db.Model):
     __tablename__ = 'usuarios'
@@ -22,3 +25,76 @@ class User(db.Model):
     def check_password(self, password):
         """Verifica la contraseña proporcionada contra el hash guardado."""
         return check_password_hash(self.contraseña_hash, password)
+
+    def __repr__(self):
+        return f'<Usuario {self.nombre} {self.apellido}>'
+    
+
+class ModeloEvaluacion(db.Model):
+    __tablename__ = 'modeloevaluacion'
+
+    idmodelo = db.Column(db.Integer, primary_key=True)
+    nombre = db.Column(db.String(50), nullable=False)
+    descripcion = db.Column(db.Text, nullable=False)
+
+    # Relación con AspectoEvaluacion
+    aspectos = db.relationship('AspectoEvaluacion', backref='modelo', lazy=True)
+
+    def __repr__(self):
+        return f"<ModeloEvaluacion id={self.idmodelo}, nombre={self.nombre}>"
+
+# Modelo de AspectoEvaluacion
+class AspectoEvaluacion(db.Model):
+    __tablename__ = 'aspectoevaluacion'
+
+    idaspecto = db.Column(db.Integer, primary_key=True)
+    nombre = db.Column(db.String(50), nullable=False)
+    descripcion = db.Column(db.Text, nullable=False)
+    idmodelo = db.Column(db.Integer, db.ForeignKey('modeloevaluacion.idmodelo'), nullable=False)
+
+    def __repr__(self):
+        return f"<AspectoEvaluacion id={self.idaspecto}, nombre={self.nombre}>"
+
+# Modelo de Pregunta
+class Pregunta(db.Model):
+    __tablename__ = 'pregunta'
+
+    idpregunta = db.Column(db.Integer, primary_key=True)
+    textopregunta = db.Column(db.Text, nullable=False)
+    idaspecto = db.Column(db.Integer, db.ForeignKey('aspectoevaluacion.idaspecto'), nullable=False)
+    aspecto = db.relationship('AspectoEvaluacion', backref='preguntas')
+
+    def __repr__(self):
+        return f"<Pregunta id={self.idpregunta}, texto={self.textopregunta[:30]}...>"
+
+# Modelo de Evaluación por Usuario
+class Evaluacion(db.Model):
+    __tablename__ = 'evaluacion'
+
+    idevaluacion = db.Column(db.Integer, primary_key=True)
+    idusuario = db.Column(db.Integer, db.ForeignKey('usuarios.id'), nullable=False)
+    idmodelo = db.Column(db.Integer, db.ForeignKey('modeloevaluacion.idmodelo'), nullable=False)
+    fecha_evaluacion = db.Column(db.Date, default=datetime.utcnow, nullable=False)
+    nombre_software = db.Column(db.String(100), nullable=False)
+    empresa = db.Column(db.String(100), nullable=True)
+    ciudad = db.Column(db.String(50), nullable=True)
+    telefono = db.Column(db.String(20), nullable=True)
+    resultado_global = db.Column(db.Float, nullable=True)
+
+    # Relación con RespuestaEvaluacion
+    respuestas = db.relationship('RespuestaEvaluacion', backref='evaluacion', lazy=True)
+
+    def __repr__(self):
+        return f"<Evaluacion id={self.idevaluacion}, software={self.nombre_software}>"
+
+# Modelo de Respuesta de Evaluación
+class RespuestaEvaluacion(db.Model):
+    __tablename__ = 'respuestaevaluacion'
+
+    idrespuesta = db.Column(db.Integer, primary_key=True)
+    idevaluacion = db.Column(db.Integer, db.ForeignKey('evaluacion.idevaluacion'), nullable=False)
+    idpregunta = db.Column(db.Integer, db.ForeignKey('pregunta.idpregunta'), nullable=False)
+    puntaje = db.Column(db.Integer, nullable=False)
+
+    def __repr__(self):
+        return f"<RespuestaEvaluacion id={self.idrespuesta}, puntaje={self.puntaje}>"

@@ -1,0 +1,191 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+
+body {
+  
+margin: 0;
+background-color: #ffffff;
+background-image: radial-gradient(#15cddd 0.9500000000000001px, #ffffff 0.9500000000000001px);
+background-size: 19px 19px;
+font-family: 'Montserrat', 'Raleway', sans-serif;
+font-weight: 800;
+
+  
+}
+.container {
+	width: 80%;
+	margin: 0 auto;
+}
+
+header {
+    background: #55d6aa;
+}
+
+header::after {
+font-family: 'Raleway', sans-serif;
+content: '';
+display: table;
+clear: both;
+}
+
+.logo {
+float: left;
+padding: 10px 0;
+}
+
+
+nav {
+    float: right;
+  }
+  
+  nav ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  
+  nav li {
+    display: inline-block;
+    margin-left: 70px;
+    padding-top: 23px;
+  
+    position: relative;
+  }
+  
+  nav a {
+    color: #444;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 14px;
+  }
+  
+  nav a:hover {
+    color: #000;
+  }
+  
+  nav a::before {
+    content: '';
+    display: block;
+    height: 5px;
+    background-color: #444;
+  
+    position: absolute;
+    top: 0;
+    width: 0%;
+  
+    transition: all ease-in-out 250ms;
+  }
+  
+  nav a:hover::before {
+    width: 100%;
+  }
+
+h1 {
+    font-family: 'Raleway', sans-serif;
+    text-align: center;
+    color: #4CAF50;
+    text-align: center;
+}
+
+.container-preguntas {
+  font-family: 'Raleway', sans-serif;
+  height: auto;
+  width: auto;
+  margin-top: 50px; /* Add some margin top */
+  margin-left: 300px;
+  margin-right: 300px;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.13);
+  padding: 25px;
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 40px rgba(175, 169, 224, 0.6);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+    text-align: center;
+    padding: 30px;
+}
+
+th {
+    background-color: #f4f4f4;
+}
+
+td {
+    text-align: left;
+}
+
+form {
+    margin: 20px 0;
+}
+
+form input, form textarea, form button {
+    margin: 5px 0;
+    padding: 10px;
+    width: 100%;
+}
+
+form button {
+    background-color: #af4c4c;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #a04545;
+}
+
+
+.button-list {
+  font-family: 'Raleway', sans-serif;
+  
+  width:fit-content;
+  height:fit-content;
+  margin: 0.5em;
+  margin-left: 5px;
+  margin-right: 5px;
+  background-size: cover;
+  background: black;
+  color: white;
+  border: none;
+  border-radius: 0.625em;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+ }
+ 
+ button:hover {
+  color: black;
+ }
+ 
+ button:after {
+  content: "";
+  background: white;
+  position: absolute;
+  z-index: -1;
+  left: -20%;
+  right: -20%;
+  top: 0;
+  bottom: 0;
+  transform: skewX(-45deg) scale(0, 1);
+  transition: all 0.5s;
+ }
+ 
+ button:hover:after {
+  transform: skewX(-45deg) scale(1, 1);
+  -webkit-transition: all 0.5s;
+  transition: all 0.5s;
+ }

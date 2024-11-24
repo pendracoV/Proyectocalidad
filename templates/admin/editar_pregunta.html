@@ -1,0 +1,14 @@
+{% extends 'base_user.html' %}
+{% block content %}
+<div class="container-preguntas">
+    <h1>Editar Pregunta</h1>
+    <form action="{{ url_for('aspectos.editar_pregunta', idpregunta=pregunta.idpregunta) }}" method="POST">
+        <label for="textopregunta">Texto de la Pregunta:</label>
+        <textarea id="textopregunta" name="textopregunta" required>{{ pregunta.textopregunta }}</textarea>
+        <button type="submit" class="button-list">Guardar Cambios</button>
+    </form>
+    <a href="{{ url_for('aspectos.listar_preguntas', idaspecto=pregunta.idaspecto) }}">
+        <button class="button-list">Cancelar</button>
+    </a>
+</div>
+{% endblock %}

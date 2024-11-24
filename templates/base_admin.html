@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
 
-    <title>Usuario Dashboard</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/style_admin.css') }}">
+    <title> Dashboard {{ user_role }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/aspectos.css') }}">
 </head>
 <body>
     <header>
         <div class="container">
-          <h4 class="logo">ADMIN</h4>
+          <h4 class="logo">Admin</h4>
     
           <nav>
             <ul>
@@ -20,7 +20,8 @@
         </div>
       </header>
       <div class="container-dashboard">
-
+        {% block content %}
+        {% endblock %}
         </div>
 
       </div>
