@@ -36,7 +36,7 @@ def dashboard_admin():
 @app.route('/dashboard_user')
 @login_required(role='usuario')
 def dashboard_user():
-    return render_template('dashboard_user.html')
+    return render_template('dashboard_user.html') 
 
 
 
