@@ -3,6 +3,9 @@ from config import Config
 from services.models import db, User
 from services.auth import auth
 from decorators import login_required
+from datetime import datetime
+from routes import routes
+from routes import modulos_bp
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -14,9 +17,16 @@ db.init_app(app)
 # Crear las tablas en la base de datos si no existen
 with app.app_context():
     db.create_all()
+    app.register_blueprint(routes, url_prefix="/routes")
+    app.register_blueprint(modulos_bp, url_prefix='/modulos')
+
+@app.context_processor
+def inject_datetime():
+    return {'datetime': datetime}
 
 # Registrar el Blueprint de autenticación
 app.register_blueprint(auth, url_prefix="/auth")
+
 
 # Rutas protegidas para el administrador
 @app.route('/dashboard_admin')
@@ -50,6 +60,11 @@ def mccall_admin():
 def dashboard_user():
     return render_template('dashboard_user.html')
 
+@app.route('/user/dashboard_user_rs')
+@login_required(role='usuario')
+def dashboard_user_rs():  # Cambiamos el nombre de la función
+    return render_template("user/dashboard_user_rs.html")#registro_user
+
 @app.route('/user/iso25000_user')
 @login_required(role='usuario')
 def iso25000_user():
@@ -70,7 +85,9 @@ def furps_user():
 def mccall_user():
     return render_template("user/mccall_user.html")
 
-# Ruta para la página de inicio
+
+
+
 @app.route('/')
 def index():
     return render_template('login.html')

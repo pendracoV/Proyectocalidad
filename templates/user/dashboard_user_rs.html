@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Evaluación de Software</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles/style_admin.css') }}">
+</head>
+
+<body>
+  <header>
+    <div class="container">
+      <h4 class="logo">USER</h4>
+      <nav>
+        <ul>
+          <li><a href="{{ url_for('dashboard_user') }}">Home</a></li>
+          <li><a href="{{ url_for('dashboard_user') }}">Historial</a></li>
+          <li><a href="{{ url_for('auth.logout') }}">Cerrar Sesión</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <div class="container-dashboard">
+    <h2 class="titulo">Formulario de Evaluación</h2>
+
+    <form method="POST" action="{{ url_for('routes.submit_evaluation') }}" class="form-evaluacion">
+      <!-- Campo: Nombre del software -->
+      <label for="nombresoftware">Nombre del Software:</label>
+      <input id="nombresoftware" name="nombresoftware" class="input-selection" type="text"
+        placeholder="Nombre del software" required>
+
+      <!-- Campo: Empresa -->
+      <label for="empresa">Empresa:</label>
+      <input id="empresa" name="empresa" class="input-selection" type="text" placeholder="Empresa" required>
+
+      <!-- Campo: Ciudad -->
+      <label for="ciudad">Ciudad:</label>
+      <input id="ciudad" name="ciudad" class="input-selection" type="text" placeholder="Ciudad" required>
+
+      <!-- Campo: Teléfono -->
+      <label for="telefono">Teléfono:</label>
+      <input id="telefono" name="telefono" class="input-selection" type="text" placeholder="Teléfono" required>
+
+      <!-- Campo: Modelo Evaluación -->
+      <label for="idmodelo">Modelo de Evaluación:</label>
+      <select id="idmodelo" name="idmodelo" class="input-selection" required>
+        <option value="">Seleccione un modelo</option>
+      </select>
+
+      <!-- Campo: Resultado Global -->
+      <label for="fechaevaluacion">Fecha</label>
+      <input type="datetime" name="fechaevaluacion" value="{{ datetime.now().strftime('%Y-%m-%d') }}">
+
+      <!-- Botón de envío -->
+      <button type="submit" class="button-submit">Iniciar Evaluación</button>
+    </form>
+  </div>
+
+  <style>
+    .form-evaluacion {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      padding: 20px;
+      border: 2px solid #12a1d5;
+      border-radius: 10px;
+      background: #f9f9f9;
+    }
+
+    .form-evaluacion label {
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .form-evaluacion .input-selection {
+      font-family: 'Raleway', sans-serif;
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.3s ease-in-out;
+    }
+
+    .form-evaluacion .input-selection:focus {
+      border-color: #12a1d5;
+    }
+
+    .button-submit {
+      padding: 10px 20px;
+      font-size: 16px;
+      color: #fff;
+      background: #12a1d5;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease-in-out;
+    }
+
+    .button-submit:hover {
+      background: #0e7db8;
+    }
+  </style>
+
+  <script>
+    // Cargar los modelos en el select al cargar la página
+    document.addEventListener('DOMContentLoaded', function () {
+      fetch('/modulos/get-modelos')
+        .then(response => response.json())
+        .then(data => {
+          const select = document.getElementById('idmodelo');
+          data.forEach(modelo => {
+            const option = document.createElement('option');
+            option.value = modelo.idmodelo;
+            option.textContent = modelo.nombre;
+            select.appendChild(option);
+          });
+        })
+        .catch(error => console.error('Error al cargar los modelos:', error));
+    });
+  </script>
+</body>
+
+</html>

@@ -22,3 +22,31 @@ class User(db.Model):
     def check_password(self, password):
         """Verifica la contraseña proporcionada contra el hash guardado."""
         return check_password_hash(self.contraseña_hash, password)
+
+
+class Evaluacion(db.Model):
+    __tablename__ = 'evaluacion'
+
+    idevaluacion = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    idusuario = db.Column(db.Integer, nullable=False)
+    nombresoftware = db.Column(db.String(255), nullable=False)
+    empresa = db.Column(db.String(255), nullable=False)
+    ciudad = db.Column(db.String(255), nullable=False)
+    telefono = db.Column(db.String(20), nullable=False)
+    fechaevaluacion = db.Column(db.Date, nullable=False)
+    idmodelo = db.Column(db.Integer, db.ForeignKey('modeloevaluacion.idmodelo'), nullable=False)  # Relación con Modelos
+
+    def __repr__(self):
+        return f'<Evaluacion {self.idevaluacion}>'
+
+
+class Modeloevaluacion(db.Model):
+    __tablename__ = 'modeloevaluacion'  # Sin comillas dobles y en minúsculas
+
+    idmodelo = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    nombre = db.Column(db.String(50), nullable=False)
+    descripcion = db.Column(db.Text, nullable=False)
+
+
+
+
