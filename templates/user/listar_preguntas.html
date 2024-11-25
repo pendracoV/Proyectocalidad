@@ -1,0 +1,25 @@
+<!-- templates/user/listar_preguntas.html -->
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Preguntas del Modelo</title>
+</head>
+
+<body>
+  <h1>Preguntas del Modelo (ID: {{ idmodelo }})</h1>
+
+  {% if preguntas %}
+  <ul>
+    {% for pregunta in preguntas %}
+    <li>{{ pregunta.textopregunta }}</li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p>No hay preguntas para este modelo de evaluación.</p>
+  {% endif %}
+</body>
+
+</html>

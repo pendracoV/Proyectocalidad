@@ -9,6 +9,9 @@ from services.dashboard import dashboard_bp
 
 
 
+from datetime import datetime
+from routes import routes
+from routes import modulos_bp
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -17,6 +20,15 @@ app.secret_key = 'your_secret_key'  # Clave para proteger las sesiones
 
 db.init_app(app)
 
+# Crear las tablas en la base de datos si no existen
+with app.app_context():
+    db.create_all()
+    app.register_blueprint(routes, url_prefix="/routes")
+    app.register_blueprint(modulos_bp, url_prefix='/modulos')
+
+@app.context_processor
+def inject_datetime():
+    return {'datetime': datetime}
 
 
 app.register_blueprint(dashboard_bp, url_prefix='/dashboard')
@@ -39,16 +51,20 @@ def dashboard_user():
     return render_template('dashboard_user.html') 
 
 
+@app.route('/user/iso25000_user')
+@login_required(role='usuario')
+def iso25000_user():
+    return render_template("user/iso25000_user.html")
+
+@app.route('/user/listar_preguntas.html')
+def listar_preguntas():
+    
+    return render_template('user/listar_preguntas.html')
 
 
 
 
 
-
-
-
-
-# Ruta para la página de inicio
 @app.route('/')
 def index():
     return render_template('login.html')
