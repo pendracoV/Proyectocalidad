@@ -41,13 +41,6 @@ def dashboard_user():
 
 
 
-
-
-
-
-
-
-
 # Ruta para la página de inicio
 @app.route('/')
 def index():
