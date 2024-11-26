@@ -189,3 +189,33 @@ form button:hover {
   -webkit-transition: all 0.5s;
   transition: all 0.5s;
  }
+
+ .form-evaluacion {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 20px;
+  border: 2px solid #12a1d5;
+  border-radius: 10px;
+  background: #f9f9f9;
+}
+
+.form-evaluacion label {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.form-evaluacion .input-selection {
+  font-family: 'Raleway', sans-serif;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.3s ease-in-out;
+}
+
+.form-evaluacion .input-selection:focus {
+  border-color: #12a1d5;
+}

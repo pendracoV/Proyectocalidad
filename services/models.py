@@ -73,13 +73,12 @@ class Evaluacion(db.Model):
 
     idevaluacion = db.Column(db.Integer, primary_key=True)
     idusuario = db.Column(db.Integer, db.ForeignKey('usuarios.id'), nullable=False)
-    idmodelo = db.Column(db.Integer, db.ForeignKey('modeloevaluacion.idmodelo'), nullable=False)
-    fecha_evaluacion = db.Column(db.Date, default=datetime.utcnow, nullable=False)
-    nombre_software = db.Column(db.String(100), nullable=False)
+    fechaevaluacion = db.Column(db.Date, default=datetime.utcnow, nullable=False)
+    nombresoftware = db.Column(db.String(100), nullable=False)  
     empresa = db.Column(db.String(100), nullable=True)
     ciudad = db.Column(db.String(50), nullable=True)
     telefono = db.Column(db.String(20), nullable=True)
-    resultado_global = db.Column(db.Float, nullable=True)
+    resultadoglobal = db.Column(db.Float, nullable=True)
 
     # Relación con RespuestaEvaluacion
     respuestas = db.relationship('RespuestaEvaluacion', backref='evaluacion', lazy=True)
@@ -98,3 +97,22 @@ class RespuestaEvaluacion(db.Model):
 
     def __repr__(self):
         return f"<RespuestaEvaluacion id={self.idrespuesta}, puntaje={self.puntaje}>"
+
+# services/models.py
+
+#######################################
+def get_questions_by_model(idmodelo):
+    """
+    Obtiene las preguntas asociadas a un modelo de evaluación.
+    
+    :param idmodelo: ID del modelo de evaluación seleccionado.
+    :return: Lista de preguntas asociadas al modelo.
+    """
+    # Realiza la consulta para obtener las preguntas
+    preguntas = (
+        db.session.query(Pregunta)
+        .join(AspectoEvaluacion, Pregunta.idaspecto == AspectoEvaluacion.idaspecto)
+        .filter(AspectoEvaluacion.idmodelo == idmodelo)
+        .all()
+    )
+    return preguntas

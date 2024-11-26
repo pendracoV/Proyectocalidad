@@ -1,0 +1,70 @@
+{% extends 'base_user.html' %}
+
+{% block content %}
+
+<head>
+  <title>Evaluación de Software</title>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</head>
+
+<div class="container-preguntas">
+  <h2 class="titulo">Formulario de Evaluación</h2>
+
+  <form method="POST" action="{{ url_for('routes.submit_evaluation') }}" class="form-evaluacion">
+    <!-- Campo: Nombre del software -->
+    <label for="nombresoftware">Nombre del Software:</label>
+    <input id="nombresoftware" name="nombresoftware" class="input-selection" type="text"
+      placeholder="Nombre del software" required>
+
+    <!-- Campo: Empresa -->
+    <label for="empresa">Empresa:</label>
+    <input id="empresa" name="empresa" class="input-selection" type="text" placeholder="Empresa" required>
+
+    <!-- Campo: Ciudad -->
+    <label for="ciudad">Ciudad:</label>
+    <input id="ciudad" name="ciudad" class="input-selection" type="text" placeholder="Ciudad" required>
+
+    <!-- Campo: Teléfono -->
+    <label for="telefono">Teléfono:</label>
+    <input id="telefono" name="telefono" class="input-selection" type="text" placeholder="Teléfono" required>
+
+    <!-- Campo: Resultado Global -->
+    <label for="fechaevaluacion">Fecha</label>
+    <input type="datetime" name="fechaevaluacion" value="{{ datetime.now().strftime('%Y-%m-%d') }}">
+
+    <!-- Botón de envío -->
+    <button type="submit" class="button-list">Iniciar Evaluación</button>
+  </form>
+
+{% endblock %}
+
+  <!-- Ventana Modal -->
+  <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="successModalLabel">Resultado de Envío</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Los datos se han enviado correctamente. ¡Gracias por completar la evaluación!</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="button-list" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Mostrar la ventana modal si el envío fue exitoso
+    document.addEventListener('DOMContentLoaded', function () {
+      const params = new URLSearchParams(window.location.search);
+      if (params.has('success') && params.get('success') === 'true') {
+        const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+        successModal.show();
+      }
+    });
+  </script>
+
+

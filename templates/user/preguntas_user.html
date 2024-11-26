@@ -1,0 +1,38 @@
+{% extends 'base_user.html' %}
+
+{% block content %}
+
+<div class="container-preguntas">
+    <h1>Preguntas para el Aspecto: {{ aspecto.nombre }}</h1>
+    <p>{{ aspecto.descripcion }}</p>
+
+    <!-- Mostrar preguntas existentes -->
+    <h3>Preguntas Existentes:</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Texto de la Pregunta</th>
+          <th> ACCIONES </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for pregunta in preguntas %}
+        <tr>
+          <td>{{ pregunta.idpregunta }}</td>
+          <td>{{ pregunta.textopregunta }}</td>
+          <td></td>
+        </tr>
+        {% endfor %}
+
+      </tbody>
+    </table>
+
+    <a><button  class="button-list">Volver</button></a>
+</div>
+
+
+{% endblock %}
+
+
+

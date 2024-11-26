@@ -23,7 +23,6 @@ header {
 }
 
 header::after {
-  
   font-family: 'Raleway', sans-serif;
   content: '';
   display: table;
@@ -103,22 +102,18 @@ box-shadow: 0 0 40px rgba(175, 169, 224, 0.6);
 
 }
 
-.container-dashboard .container-selection {
-display: flex;
-font-family: 'Raleway', sans-serif;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-padding: 20px;
-margin-top: 50px;
-height: 200px;
-border: 2px solid #ddd;
-border-radius: 10px;
-background-color: #f9f9f9;
+
+.container-selection{
+  display: flex;
+  flex-direction: column; /* Coloca los elementos en una columna */
+  justify-content: center; /* Centrar verticalmente los elementos dentro del contenedor */
+  align-items: center; /* Centrar horizontalmente los elementos dentro del contenedor */ 
+  padding: 20px;
+  margin-top: 100px;
+  margin: 100px;
+  height: 200px;
+
 }
-
-/* Estilos para el campo de entrada */
-
 
 .lista{
   display: flex;
@@ -134,7 +129,6 @@ background-color: #f9f9f9;
   width: 5.5em;
   height: 1.3em;
   margin: 0.5em;
-  background-image: url('/static/images/pluma.png');
   background-size: cover;
   background: black;
   color: white;

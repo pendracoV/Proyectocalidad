@@ -1,0 +1,43 @@
+{% extends 'base_user.html' %}
+
+{% block content %}
+
+<div class="container-preguntas">
+    <h1>Modelo: {{ modelo.nombre }}</h1>
+    <p>{{ modelo.descripcion }}</p>
+
+    <!-- Mostrar aspectos relacionados -->
+    <h3>Aspectos del Modelo:</h3>
+    {% if aspectos %}
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for aspecto in aspectos %}
+                <tr>
+                    <td>{{ aspecto.idaspecto }}</td>
+                    <td>{{ aspecto.nombre }}</td>
+                    <td>{{ aspecto.descripcion }}</td>
+                    <td>
+                        <a href="{{ url_for('aspectos_user.listar_preguntas_user', idaspecto=aspecto.idaspecto) }}">
+                            <button class="button-list">Ver Preguntas</button>
+                        </a>
+                    </td>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No hay aspectos registrados para este modelo.</p>
+    {% endif %}
+
+</div>
+
+{% endblock %}
