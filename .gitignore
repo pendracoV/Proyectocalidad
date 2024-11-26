@@ -3,6 +3,4 @@ config.py
 /__pycache__
 /entorno_v
 .gitignore
-services/user.py
-.gitignore
-.gitignore
+config.py
