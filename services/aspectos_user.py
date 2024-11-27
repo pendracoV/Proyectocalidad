@@ -17,19 +17,10 @@ def listar_aspectos_user():
 
     return render_template('/user/listar_aspectos_user.html', modelo=modelo, aspectos=aspectos)
 
-
-
-
-
 # Ruta para listar preguntas
 @aspectos_user_bp.route('/<int:idaspecto>/preguntas', methods=['GET'])
 def listar_preguntas_user(idaspecto):
     aspecto = AspectoEvaluacion.query.get_or_404(idaspecto)
     preguntas = Pregunta.query.filter_by(idaspecto=idaspecto).all()
     return render_template('/user/preguntas_user.html', aspecto=aspecto, preguntas=preguntas)
-
-
-
-
-
 

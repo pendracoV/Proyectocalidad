@@ -3,17 +3,18 @@
 {% block content %}
 
 <div class="container-preguntas">
-    <h1>Preguntas para el Aspecto: {{ aspecto.nombre }}</h1>
-    <p>{{ aspecto.descripcion }}</p>
+  <h1>Preguntas para el Aspecto: {{ aspecto.nombre }}</h1>
+  <p>{{ aspecto.descripcion }}</p>
 
-    <!-- Mostrar preguntas existentes -->
-    <h3>Preguntas Existentes:</h3>
+  <!-- Mostrar preguntas existentes con inputs de calificación -->
+  <h3>Preguntas Existentes:</h3>
+  <form id="form-calificaciones">
     <table>
       <thead>
         <tr>
           <th>ID</th>
           <th>Texto de la Pregunta</th>
-          <th> ACCIONES </th>
+          <th>Calificación</th>
         </tr>
       </thead>
       <tbody>
@@ -21,18 +22,146 @@
         <tr>
           <td>{{ pregunta.idpregunta }}</td>
           <td>{{ pregunta.textopregunta }}</td>
-          <td></td>
+          <td>
+            <input type="number" class="calificacion-input" data-id="{{ pregunta.idpregunta }}"
+              name="calificacion-{{ pregunta.idpregunta }}" min="0" max="3" value="0" required>
+          </td>
         </tr>
         {% endfor %}
-
       </tbody>
     </table>
 
-    <a href="{{ url_for('aspectos_user.listar_aspectos_user') }}"><button  class="button-list">Volver</button></a>
+    <div>
+      <p>Total Calificaciones: <span id="total-calificaciones">0</span></p>
+      <p>Puntaje Máximo: <span id="puntaje-maximo">{{ preguntas|length * 3 }}</span></p>
+      <p>Porcentaje de Cumplimiento: <span id="porcentaje-cumplimiento">0%</span></p>
+    </div>
+
+    <button type="submit" class="button-submit">Enviar Calificaciones</button>
+  </form>
+
+  <!-- Tabla de resultados almacenados -->
+  <div>
+    <h3>Historial de Evaluaciones</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Aspecto</th>
+          <th>Valor</th>
+          <th>Maximo</th>
+          <th>% RESUL</th>
+          <th>MAXIMO</th>
+          <th>% GLOBAL</th>
+        </tr>
+      </thead>
+      <tbody id="tabla-historial">
+        <!-- Aquí se cargarán los datos dinámicamente con JavaScript -->
+      </tbody>
+    </table>
+  </div>
+
+  <a href="{{ url_for('aspectos_user.listar_aspectos_user') }}">
+    <button class="button-list">Volver</button>
+  </a>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('form-calificaciones');
+    const totalSpan = document.getElementById('total-calificaciones');
+    const puntajeMaximoSpan = document.getElementById('puntaje-maximo');
+    const porcentajeCumplimientoSpan = document.getElementById('porcentaje-cumplimiento');
+    const tablaHistorial = document.getElementById('tabla-historial');
+
+    const totalPreguntas = document.querySelectorAll('.calificacion-input').length;
+    const puntajeMaximo = totalPreguntas * 3;
+    puntajeMaximoSpan.textContent = puntajeMaximo;
+
+    function calcularPorcentaje(total) {
+      return ((total / puntajeMaximo) * 100).toFixed(2);
+    }
+
+    function cargarHistorial() {
+      const historial = JSON.parse(localStorage.getItem('historialEvaluaciones')) || [];
+      tablaHistorial.innerHTML = ''; // Limpiar tabla
+
+      const totalAspectos = historial.length;
+      const porcentajeGlobal = (100 / totalAspectos).toFixed(2);  // Porcentaje global por aspecto
+
+      // Calcular porcentaje máximo por aspecto
+      const porcentajeMaximo = (100 / totalAspectos).toFixed(2);
+
+      historial.forEach(({ aspecto, total, maximo, porcentaje, global }) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${aspecto}</td>
+          <td>${total}</td>
+          <td>${maximo}</td> <!-- MAXIMO como porcentaje -->
+          <td>${porcentaje}%</td>
+          <td>${porcentajeMaximo}%</td>  <!-- MAXIMO calculado dinámicamente -->
+          <td>${porcentajeGlobal}%</td>  <!-- % GLOBAL -->
+        `;
+        tablaHistorial.appendChild(row);
+      });
+    }
+
+    form.addEventListener('input', () => {
+      const inputs = document.querySelectorAll('.calificacion-input');
+      let total = 0;
+
+      inputs.forEach(input => {
+        const value = parseInt(input.value || 0);
+        if (value < 0) input.value = 0;
+        if (value > 3) input.value = 3;
+        total += parseInt(input.value || 0);
+      });
+
+      totalSpan.textContent = total;
+      porcentajeCumplimientoSpan.textContent = `${calcularPorcentaje(total)}%`;
+    });
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      const totalCalificaciones = parseInt(totalSpan.textContent);
+      const porcentajeCumplimiento = calcularPorcentaje(totalCalificaciones);
+
+      let historial = JSON.parse(localStorage.getItem('historialEvaluaciones')) || [];
+
+      // Buscar si el aspecto ya está en el historial
+      const aspectoExistente = historial.find(entry => entry.aspecto === "{{ aspecto.nombre }}");
+
+      if (aspectoExistente) {
+        // Actualizar los valores del aspecto existente
+        aspectoExistente.total = totalCalificaciones;
+        aspectoExistente.porcentaje = porcentajeCumplimiento;
+      } else {
+        // Agregar un nuevo registro al historial
+        historial.push({
+          aspecto: "{{ aspecto.nombre }}",
+          total: totalCalificaciones,
+          maximo: puntajeMaximo,  // Agregar puntaje máximo a la entrada
+          porcentaje: porcentajeCumplimiento,
+          global: (100 / (historial.length + 1)).toFixed(2)  // Calcular % Global según el total de aspectos
+        });
+      }
+
+      // Guardar en localStorage
+      localStorage.setItem('historialEvaluaciones', JSON.stringify(historial));
+
+      cargarHistorial();
+
+      alert('Calificaciones guardadas exitosamente en el historial.');
+    });
+
+    // Cargar historial al cargar la página
+    cargarHistorial();
+  });
+</script>
+
+
+
+
 
 
 {% endblock %}
-
-
-
