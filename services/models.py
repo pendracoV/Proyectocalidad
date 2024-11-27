@@ -73,8 +73,9 @@ class Evaluacion(db.Model):
 
     idevaluacion = db.Column(db.Integer, primary_key=True)
     idusuario = db.Column(db.Integer, db.ForeignKey('usuarios.id'), nullable=False)
+    idmodelo = db.Column(db.Integer, db.ForeignKey('modeloevaluacion.idmodelo'), nullable=False)
     fechaevaluacion = db.Column(db.Date, default=datetime.utcnow, nullable=False)
-    nombresoftware = db.Column(db.String(100), nullable=False)  
+    nombresoftware = db.Column(db.String(100), nullable=False)
     empresa = db.Column(db.String(100), nullable=True)
     ciudad = db.Column(db.String(50), nullable=True)
     telefono = db.Column(db.String(20), nullable=True)
@@ -84,7 +85,7 @@ class Evaluacion(db.Model):
     respuestas = db.relationship('RespuestaEvaluacion', backref='evaluacion', lazy=True)
 
     def __repr__(self):
-        return f"<Evaluacion id={self.idevaluacion}, software={self.nombre_software}>"
+        return f"<Evaluacion id={self.idevaluacion}, software={self.nombresoftware}>"
 
 # Modelo de Respuesta de Evaluación
 class RespuestaEvaluacion(db.Model):

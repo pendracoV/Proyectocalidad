@@ -11,7 +11,10 @@
 <div class="container-preguntas">
   <h2 class="titulo">Formulario de Evaluación</h2>
 
-  <form method="POST" action="{{ url_for('routes.submit_evaluation') }}" class="form-evaluacion">
+  <form method="POST" action="{{ url_for('registrar_software.registrar_software') }}" class="form-evaluacion">
+
+    <p>Modelo seleccionado: {{ idmodelo }}</p>
+    <input type="hidden" name="idmodelo" value="{{ idmodelo }}">
     <!-- Campo: Nombre del software -->
     <label for="nombresoftware">Nombre del Software:</label>
     <input id="nombresoftware" name="nombresoftware" class="input-selection" type="text"
@@ -36,35 +39,11 @@
     <!-- Botón de envío -->
     <button type="submit" class="button-list">Iniciar Evaluación</button>
   </form>
+ </div>
+
+
 
 {% endblock %}
 
-  <!-- Ventana Modal -->
-  <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="successModalLabel">Resultado de Envío</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <p>Los datos se han enviado correctamente. ¡Gracias por completar la evaluación!</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="button-list" data-bs-dismiss="modal">Cerrar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <script>
-    // Mostrar la ventana modal si el envío fue exitoso
-    document.addEventListener('DOMContentLoaded', function () {
-      const params = new URLSearchParams(window.location.search);
-      if (params.has('success') && params.get('success') === 'true') {
-        const successModal = new bootstrap.Modal(document.getElementById('successModal'));
-        successModal.show();
-      }
-    });
-  </script>
 
 
