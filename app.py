@@ -30,7 +30,7 @@ app.register_blueprint(aspectos_bp, url_prefix="/aspectos")
 app.register_blueprint(dashboard_user_bp, url_prefix='/dashboard_user')
 app.register_blueprint(aspectos_user_bp, url_prefix="/aspectos_user") 
 app.register_blueprint(auth, url_prefix="/auth")
-
+#####################################
 
 
 # Rutas protegidas para el administrador

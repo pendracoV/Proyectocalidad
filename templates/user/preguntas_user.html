@@ -50,20 +50,28 @@
         <tr>
           <th>Aspecto</th>
           <th>Valor</th>
-          <th>Maximo</th>
+          <th>Máximo</th>
           <th>% RESUL</th>
-          <th>MAXIMO</th>
+          <th>% MAXIMO</th>
           <th>% GLOBAL</th>
         </tr>
       </thead>
       <tbody id="tabla-historial">
-        <!-- Aquí se cargarán los datos dinámicamente con JavaScript -->
+        <!-- Las filas dinámicas se agregarán aquí -->
       </tbody>
+      <tfoot>
+        <tr id="total-global-row">
+          <!-- Totales dinámicos aquí -->
+        </tr>
+      </tfoot>
     </table>
+
   </div>
 
   <a href="{{ url_for('aspectos_user.listar_aspectos_user') }}">
     <button class="button-list">Volver</button>
+    <!-- Botón Terminar Evaluación -->
+    <button id="btn-terminar-evaluacion">Terminar Evaluación</button>
   </a>
 </div>
 
@@ -74,6 +82,7 @@
     const puntajeMaximoSpan = document.getElementById('puntaje-maximo');
     const porcentajeCumplimientoSpan = document.getElementById('porcentaje-cumplimiento');
     const tablaHistorial = document.getElementById('tabla-historial');
+    const totalGlobalRow = document.getElementById('total-global-row'); // Fila para el total
 
     const totalPreguntas = document.querySelectorAll('.calificacion-input').length;
     const puntajeMaximo = totalPreguntas * 3;
@@ -88,23 +97,39 @@
       tablaHistorial.innerHTML = ''; // Limpiar tabla
 
       const totalAspectos = historial.length;
-      const porcentajeGlobal = (100 / totalAspectos).toFixed(2);  // Porcentaje global por aspecto
+      const porcentajeMaximo = (100 / totalAspectos).toFixed(2); // Porcentaje máximo por aspecto
+      let sumaGlobal = 0; // Suma de los valores de % GLOBAL
+      let sumaValores = 0; // Suma de los valores en la columna "Valor"
+      let sumaMaximos = 0; // Suma de los valores en la columna "Máximo"
 
-      // Calcular porcentaje máximo por aspecto
-      const porcentajeMaximo = (100 / totalAspectos).toFixed(2);
+      historial.forEach(({ aspecto, total, maximo, porcentaje }) => {
+        // Calcular % GLOBAL como % RESUL * % MAXIMO
+        const porcentajeGlobal = ((porcentaje * porcentajeMaximo) / 100).toFixed(2);
+        sumaGlobal += parseFloat(porcentajeGlobal);
+        sumaValores += total;
+        sumaMaximos += maximo;
 
-      historial.forEach(({ aspecto, total, maximo, porcentaje, global }) => {
         const row = document.createElement('tr');
         row.innerHTML = `
           <td>${aspecto}</td>
           <td>${total}</td>
-          <td>${maximo}</td> <!-- MAXIMO como porcentaje -->
+          <td>${maximo}</td>
           <td>${porcentaje}%</td>
-          <td>${porcentajeMaximo}%</td>  <!-- MAXIMO calculado dinámicamente -->
-          <td>${porcentajeGlobal}%</td>  <!-- % GLOBAL -->
+          <td>${porcentajeMaximo}%</td>
+          <td>${porcentajeGlobal}%</td>
         `;
         tablaHistorial.appendChild(row);
       });
+
+      // Actualizar Total Global al final de la tabla
+      totalGlobalRow.innerHTML = `
+        <td><strong>TOTALES</strong></td>
+        <td><strong>${sumaValores}</strong></td>
+        <td><strong>${sumaMaximos}</strong></td>
+        <td></td>
+        <td></td>
+        <td><strong>${sumaGlobal.toFixed(2)}%</strong></td>
+      `;
     }
 
     form.addEventListener('input', () => {
@@ -142,9 +167,8 @@
         historial.push({
           aspecto: "{{ aspecto.nombre }}",
           total: totalCalificaciones,
-          maximo: puntajeMaximo,  // Agregar puntaje máximo a la entrada
-          porcentaje: porcentajeCumplimiento,
-          global: (100 / (historial.length + 1)).toFixed(2)  // Calcular % Global según el total de aspectos
+          maximo: puntajeMaximo,
+          porcentaje: porcentajeCumplimiento
         });
       }
 
@@ -161,6 +185,40 @@
   });
 </script>
 
+<script>
+  document.getElementById('btn-terminar-evaluacion').addEventListener('click', async () => {
+    const resultadoglobal = parseFloat(document.getElementById('total-global-row').querySelector('td:last-child').textContent) || 0;
+    const idevaluacion = /* Obtener el ID de la evaluación actual (por ejemplo, almacenado en sesión o data attribute) */;
+
+    if (!idevaluacion) {
+      alert("No se pudo identificar la evaluación actual.");
+      return;
+    }
+
+    try {
+      const response = await fetch('/actualizar_resultadoglobal', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          idevaluacion: idevaluacion,
+          resultadoglobal: resultadoglobal,
+        }),
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        alert('Resultado final guardado exitosamente.');
+      } else {
+        alert('Error al guardar el resultado final.');
+      }
+    } catch (error) {
+      console.error('Error en la solicitud:', error);
+      alert('Ocurrió un error al comunicarse con el servidor.');
+    }
+  });
+</script>
 
 
 
