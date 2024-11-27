@@ -3,8 +3,7 @@
 {% block content %}
 
 <div class="container-preguntas">
-    <h1>Modelo: {{ modelo.nombre }}</h1>
-    <p>{{ modelo.descripcion }}</p>
+    <h1>Modelo: {{ modelo.nombre }} - Software: ({{ nombresoftware }}) </h1>
 
     <!-- Mostrar aspectos relacionados -->
     <h3>Aspectos del Modelo:</h3>
@@ -25,7 +24,7 @@
                     <td>{{ aspecto.nombre }}</td>
                     <td>{{ aspecto.descripcion }}</td>
                     <td>
-                        <a href="{{ url_for('aspectos_user.listar_preguntas_user', idaspecto=aspecto.idaspecto) }}">
+                        <a href="{{ url_for('aspectos_user.listar_preguntas_user', idaspecto=aspecto.idaspecto, nombresoftware=nombresoftware) }}">
                             <button class="button-list">Ver Preguntas</button>
                         </a>
                     </td>
@@ -34,7 +33,7 @@
                 {% endfor %}
             </tbody>
         </table>
-        <a href="{{ url_for('dashboard_user') }}"><button  class="button-list">Volver</button></a>
+        <a href="{{ url_for('registrar_software.registrar_software') }}"><button  class="button-list">Volver</button></a>
     {% else %}
         <p>No hay aspectos registrados para este modelo.</p>
     {% endif %}

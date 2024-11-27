@@ -9,4 +9,4 @@ def seleccionar_modelo_user(idmodelo):
     flash(f'Modelo {idmodelo} seleccionado.', 'success')
 
     # Redirigir a la lista de aspectos
-    return redirect(url_for('aspectos_user.listar_aspectos_user'))
+    return redirect(url_for('registrar_software.registrar_software'))

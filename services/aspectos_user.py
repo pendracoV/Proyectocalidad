@@ -11,22 +11,20 @@ def listar_aspectos_user():
     if not idmodelo:
         flash('No se ha seleccionado un modelo.', 'error')
         return redirect(url_for('dashboard_user'))
-
+    nombresoftware = request.args.get('nombresoftware')
     modelo = ModeloEvaluacion.query.get_or_404(idmodelo)
     aspectos = AspectoEvaluacion.query.filter_by(idmodelo=idmodelo).all()
 
-    return render_template('/user/listar_aspectos_user.html', modelo=modelo, aspectos=aspectos)
-
-
-
+    return render_template('/user/listar_aspectos_user.html', modelo=modelo, aspectos=aspectos, nombresoftware=nombresoftware)
 
 
 # Ruta para listar preguntas
 @aspectos_user_bp.route('/<int:idaspecto>/preguntas', methods=['GET'])
 def listar_preguntas_user(idaspecto):
+    nombresoftware = request.args.get('nombresoftware')
     aspecto = AspectoEvaluacion.query.get_or_404(idaspecto)
     preguntas = Pregunta.query.filter_by(idaspecto=idaspecto).all()
-    return render_template('/user/preguntas_user.html', aspecto=aspecto, preguntas=preguntas)
+    return render_template('/user/preguntas_user.html', aspecto=aspecto, preguntas=preguntas, nombresoftware=nombresoftware)
 
 
 

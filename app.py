@@ -7,12 +7,9 @@ from services.aspectos_user import aspectos_user_bp # Importa el Blueprint
 from decorators import login_required
 from services.dashboard import dashboard_bp
 from services.dashboard_user import dashboard_user_bp
-
-
-
+from services.registrar_software import registrar_software_bp
 from datetime import datetime
-from routes import routes
-from routes import modulos_bp
+
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -22,21 +19,18 @@ app.secret_key = 'your_secret_key'  # Clave para proteger las sesiones
 db.init_app(app)
 
 # Crear las tablas en la base de datos si no existen
-with app.app_context():
-    db.create_all()
-    app.register_blueprint(routes, url_prefix="/routes")
-    app.register_blueprint(modulos_bp, url_prefix='/modulos')
 
 @app.context_processor
 def inject_datetime():
     return {'datetime': datetime}
 
-
+app.register_blueprint(registrar_software_bp, url_prefix='/software')
 app.register_blueprint(dashboard_bp, url_prefix='/dashboard')
 app.register_blueprint(aspectos_bp, url_prefix="/aspectos") 
 app.register_blueprint(dashboard_user_bp, url_prefix='/dashboard_user')
 app.register_blueprint(aspectos_user_bp, url_prefix="/aspectos_user") 
 app.register_blueprint(auth, url_prefix="/auth")
+
 
 
 # Rutas protegidas para el administrador

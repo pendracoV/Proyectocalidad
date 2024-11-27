@@ -3,7 +3,7 @@
 {% block content %}
 
 <div class="container-preguntas">
-    <h1>Preguntas para el Aspecto: {{ aspecto.nombre }}</h1>
+    <h1>Preguntas para el Aspecto: {{ aspecto.nombre }} - Software: ({{ nombresoftware }})</h1>
     <p>{{ aspecto.descripcion }}</p>
 
     <!-- Mostrar preguntas existentes -->
@@ -28,7 +28,7 @@
       </tbody>
     </table>
 
-    <a href="{{ url_for('aspectos_user.listar_aspectos_user') }}"><button  class="button-list">Volver</button></a>
+    <a href="{{ url_for('aspectos_user.listar_aspectos_user', nombresoftware=nombresoftware) }}"><button  class="button-list">Volver</button></a>
 </div>
 
 
