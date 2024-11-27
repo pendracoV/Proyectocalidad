@@ -3,13 +3,8 @@
 {% block content %}
 
 <div class="container-preguntas">
-<<<<<<< HEAD
-    <h1>Preguntas para el Aspecto: {{ aspecto.nombre }} - Software: ({{ nombresoftware }})</h1>
-    <p>{{ aspecto.descripcion }}</p>
-=======
-  <h1>Preguntas para el Aspecto: {{ aspecto.nombre }}</h1>
+  <h1>Preguntas para el Aspecto: {{ aspecto.nombre }} - Software: ({{ nombresoftware }})</h1>
   <p>{{ aspecto.descripcion }}</p>
->>>>>>> evaluacion
 
   <!-- Mostrar preguntas existentes con inputs de calificación -->
   <h3>Preguntas Existentes:</h3>
@@ -36,9 +31,8 @@
       </tbody>
     </table>
 
-<<<<<<< HEAD
-    <a href="{{ url_for('aspectos_user.listar_aspectos_user', nombresoftware=nombresoftware) }}"><button  class="button-list">Volver</button></a>
-=======
+    <a href="{{ url_for('aspectos_user.listar_aspectos_user', nombresoftware=nombresoftware) }}"><button
+        class="button-list">Volver</button></a>
     <div>
       <p>Total Calificaciones: <span id="total-calificaciones">0</span></p>
       <p>Puntaje Máximo: <span id="puntaje-maximo">{{ preguntas|length * 3 }}</span></p>
@@ -71,7 +65,6 @@
   <a href="{{ url_for('aspectos_user.listar_aspectos_user') }}">
     <button class="button-list">Volver</button>
   </a>
->>>>>>> evaluacion
 </div>
 
 <script>

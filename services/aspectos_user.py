@@ -15,12 +15,7 @@ def listar_aspectos_user():
     modelo = ModeloEvaluacion.query.get_or_404(idmodelo)
     aspectos = AspectoEvaluacion.query.filter_by(idmodelo=idmodelo).all()
 
-<<<<<<< HEAD
     return render_template('/user/listar_aspectos_user.html', modelo=modelo, aspectos=aspectos, nombresoftware=nombresoftware)
-
-=======
-    return render_template('/user/listar_aspectos_user.html', modelo=modelo, aspectos=aspectos)
->>>>>>> evaluacion
 
 # Ruta para listar preguntas
 @aspectos_user_bp.route('/<int:idaspecto>/preguntas', methods=['GET'])
