@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, url_for, session, flash
 from config import Config
-from services.models import db, User, Evaluacion
+from services.models import db, User
 from services.auth import auth
 from services.aspectos import aspectos_bp
 from services.aspectos_user import aspectos_user_bp # Importa el Blueprint
@@ -53,30 +53,3 @@ def index():
 
 if __name__ == "__main__":
     app.run(debug=True)
-
-#################################
-from flask import Flask, request, jsonify
-
-
-app = Flask(__name__)
-
-@app.route('/actualizar_resultado_global', methods=['POST'])
-def actualizar_resultado_global():
-    data = request.get_json()
-    idevaluacion = data.get('idevaluacion')
-    resultadoglobal = data.get('resultadoglobal')
-
-    if not idevaluacion or resultadoglobal is None:
-        return jsonify({'success': False, 'message': 'Datos incompletos'}), 400
-
-    # Buscar la evaluación por su ID
-    evaluacion = Evaluacion.query.get(idevaluacion)
-
-    if not evaluacion:
-        return jsonify({'success': False, 'message': 'Evaluación no encontrada'}), 404
-
-    # Actualizar el resultado global
-    evaluacion.resultadoglobal = resultadoglobal
-    db.session.commit()
-
-    return jsonify({'success': True, 'message': 'Resultado global actualizado correctamente'})

@@ -4,3 +4,6 @@ config.py
 /entorno_v
 .gitignore
 config.py
+services/__pycache__/aspectos.cpython-312.pyc
+services/__pycache__/editar_evaluacion.cpython-312.pyc
+services/__pycache__/registrar_software.cpython-312.pyc
