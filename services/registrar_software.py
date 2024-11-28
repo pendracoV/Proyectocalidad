@@ -23,6 +23,7 @@ def registrar_software():
     ciudad = request.form.get('ciudad')
     telefono = request.form.get('telefono')
     fechaevaluacion = request.form.get('fechaevaluacion') or datetime.now().strftime('%Y-%m-%d')
+    resultadoglobal = request.form.get('resultadoglobal', type=float)
 
     # Validar campos obligatorios
     if not (nombresoftware and empresa and ciudad and telefono):
@@ -43,7 +44,8 @@ def registrar_software():
         empresa=empresa,
         ciudad=ciudad,
         telefono=telefono,
-        fechaevaluacion=fechaevaluacion
+        fechaevaluacion=fechaevaluacion,
+        resultadoglobal=resultadoglobal
     )
 
     try:
@@ -64,30 +66,4 @@ def registrar_software():
         return redirect(url_for('registrar_software.registrar_software'))
 
 ##################################################
-from flask import Blueprint, request, jsonify
-from services.models import db, Evaluacion
 
-@registrar_software_bp.route('/actualizar_resultadoglobal', methods=['POST'])
-def actualizar_resultadoglobal():
-    data = request.get_json()
-    idevaluacion = data.get('idevaluacion')
-    resultadoglobal = data.get('resultadoglobal')
-
-    if not idevaluacion or resultadoglobal is None:
-        return jsonify({'success': False, 'message': 'Datos incompletos.'}), 400
-
-    try:
-        # Buscar la evaluación correspondiente
-        evaluacion = Evaluacion.query.get(idevaluacion)
-        if not evaluacion:
-            return jsonify({'success': False, 'message': 'Evaluación no encontrada.'}), 404
-
-        # Actualizar el resultado global
-        evaluacion.resultadoglobal = resultadoglobal
-        db.session.commit()
-
-        return jsonify({'success': True, 'message': 'Resultado global actualizado correctamente.'}), 200
-
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({'success': False, 'message': f'Error al actualizar: {str(e)}'}), 500

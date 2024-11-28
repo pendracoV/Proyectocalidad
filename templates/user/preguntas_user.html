@@ -70,44 +70,139 @@
   <a href="{{ url_for('aspectos_user.listar_aspectos_user') }}">
     <button class="button-list">Volver</button>
   </a>
-</div>
+  <div class="container">
+    <h2 class="titulo">Datos de Evaluación</h2>
 
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('form-calificaciones');
-    const totalSpan = document.getElementById('total-calificaciones');
-    const puntajeMaximoSpan = document.getElementById('puntaje-maximo');
-    const porcentajeCumplimientoSpan = document.getElementById('porcentaje-cumplimiento');
-    const tablaHistorial = document.getElementById('tabla-historial');
-    const totalGlobalRow = document.getElementById('total-global-row'); // Fila para el total
+    <!-- Menú de pestañas -->
+    <ul class="tabs">
+      <li class="tab active" data-target="tab-evaluaciones">Evaluaciones</li>
+      <li class="tab" data-target="tab-formulario">Formulario de Evaluación</li>
+    </ul>
+    <!-- Contenido de las pestañas -->
+    <div class="tab-content">
+      <!-- Vista general de evaluaciones -->
+      <div id="tab-evaluaciones" class="tab-pane active">
+        <p>Porcentaje de Evaluación de manera global. %</p>
+        <input id="resultadoglobal2" name="resultadoglobal2" class="input-selection" type="text" step="any" readonly
+          placeholder="Resultado Global" required>
+      </div>
 
-    const totalPreguntas = document.querySelectorAll('.calificacion-input').length;
-    const puntajeMaximo = totalPreguntas * 3;
-    puntajeMaximoSpan.textContent = puntajeMaximo;
+      <!-- Formulario oculto por defecto -->
+      <div id="tab-formulario" class="tab-pane">
+        <h2 class="titulo">Formulario de Evaluación</h2>
 
-    function calcularPorcentaje(total) {
-      return ((total / puntajeMaximo) * 100).toFixed(2);
+        <form method="POST" action="{{ url_for('registrar_software.registrar_software') }}" class="form-evaluacion">
+          <p>Modelo seleccionado: {{ idmodelo }}</p>
+          <input type="hidden" name="idmodelo" value="{{ idmodelo }}">
+
+          <!-- Campo: Nombre del software -->
+          <label for="nombresoftware">Nombre del Software:</label>
+          <input id="nombresoftware" name="nombresoftware" class="input-selection" type="text"
+            placeholder="Nombre del software" required>
+
+          <!-- Campo: Empresa -->
+          <label for="empresa">Empresa:</label>
+          <input id="empresa" name="empresa" class="input-selection" type="text" placeholder="Empresa" required>
+
+          <!-- Campo: Ciudad -->
+          <label for="ciudad">Ciudad:</label>
+          <input id="ciudad" name="ciudad" class="input-selection" type="text" placeholder="Ciudad" required>
+
+          <!-- Campo: Teléfono -->
+          <label for="telefono">Teléfono:</label>
+          <input id="telefono" name="telefono" class="input-selection" type="text" placeholder="Teléfono" required>
+
+          <!-- Campo: Resultado Global -->
+          <label for="resultadoglobal">Resultado Global:</label>
+          <input id="resultadoglobal" name="resultadoglobal" class="input-selection" type="number" step="any"
+            placeholder="Resultado Global" required>
+
+          <!-- Campo: Fecha -->
+          <label for="fechaevaluacion">Fecha:</label>
+          <input type="datetime" name="fechaevaluacion" value="{{ datetime.now().strftime('%Y-%m-%d') }}" required>
+
+          <!-- Botón de envío -->
+          <button type="submit" class="button-list">Terminar Evaluación</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <style>
+    /* Contenedor de las pestañas */
+    .tabs {
+      display: flex;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      border-bottom: 2px solid #ddd;
     }
 
-    function cargarHistorial() {
-      const historial = JSON.parse(localStorage.getItem('historialEvaluaciones')) || [];
-      tablaHistorial.innerHTML = ''; // Limpiar tabla
+    .tab {
+      padding: 10px 20px;
+      cursor: pointer;
+      border: 1px solid #ddd;
+      border-bottom: none;
+      background-color: #f9f9f9;
+      margin-right: 5px;
+    }
 
-      const totalAspectos = historial.length;
-      const porcentajeMaximo = (100 / totalAspectos).toFixed(2); // Porcentaje máximo por aspecto
-      let sumaGlobal = 0; // Suma de los valores de % GLOBAL
-      let sumaValores = 0; // Suma de los valores en la columna "Valor"
-      let sumaMaximos = 0; // Suma de los valores en la columna "Máximo"
+    .tab.active {
+      background-color: white;
+      font-weight: bold;
+      border-bottom: 2px solid white;
+    }
 
-      historial.forEach(({ aspecto, total, maximo, porcentaje }) => {
-        // Calcular % GLOBAL como % RESUL * % MAXIMO
-        const porcentajeGlobal = ((porcentaje * porcentajeMaximo) / 100).toFixed(2);
-        sumaGlobal += parseFloat(porcentajeGlobal);
-        sumaValores += total;
-        sumaMaximos += maximo;
+    .tab-content {
+      padding: 20px;
+      border: 1px solid #ddd;
+    }
 
-        const row = document.createElement('tr');
-        row.innerHTML = `
+    .tab-pane {
+      display: none;
+    }
+
+    .tab-pane.active {
+      display: block;
+    }
+  </style>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('form-calificaciones');
+      const totalSpan = document.getElementById('total-calificaciones');
+      const puntajeMaximoSpan = document.getElementById('puntaje-maximo');
+      const porcentajeCumplimientoSpan = document.getElementById('porcentaje-cumplimiento');
+      const tablaHistorial = document.getElementById('tabla-historial');
+      const totalGlobalRow = document.getElementById('total-global-row'); // Fila para el total
+      const resultadoGlobalInput = document.getElementById('resultadoglobal');  // Input para Resultado Global
+      const resultadoGlobalInput2 = document.getElementById('resultadoglobal2');
+      const totalPreguntas = document.querySelectorAll('.calificacion-input').length;
+      const puntajeMaximo = totalPreguntas * 3;
+      puntajeMaximoSpan.textContent = puntajeMaximo;
+
+      function calcularPorcentaje(total) {
+        return ((total / puntajeMaximo) * 100).toFixed(2);
+      }
+
+      function cargarHistorial() {
+        const historial = JSON.parse(localStorage.getItem('historialEvaluaciones')) || [];
+        tablaHistorial.innerHTML = ''; // Limpiar tabla
+
+        const totalAspectos = historial.length;
+        const porcentajeMaximo = (100 / totalAspectos).toFixed(2); // Porcentaje máximo por aspecto
+        let sumaGlobal = 0; // Suma de los valores de % GLOBAL
+        let sumaValores = 0; // Suma de los valores en la columna "Valor"
+        let sumaMaximos = 0; // Suma de los valores en la columna "Máximo"
+
+        historial.forEach(({ aspecto, total, maximo, porcentaje }) => {
+          // Calcular % GLOBAL como % RESUL * % MAXIMO
+          const porcentajeGlobal = ((porcentaje * porcentajeMaximo) / 100).toFixed(2);
+          sumaGlobal += parseFloat(porcentajeGlobal);
+          sumaValores += total;
+          sumaMaximos += maximo;
+
+          const row = document.createElement('tr');
+          row.innerHTML = `
           <td>${aspecto}</td>
           <td>${total}</td>
           <td>${maximo}</td>
@@ -115,11 +210,11 @@
           <td>${porcentajeMaximo}%</td>
           <td>${porcentajeGlobal}%</td>
         `;
-        tablaHistorial.appendChild(row);
-      });
+          tablaHistorial.appendChild(row);
+        });
 
-      // Actualizar Total Global al final de la tabla
-      totalGlobalRow.innerHTML = `
+        // Actualizar Total Global al final de la tabla
+        totalGlobalRow.innerHTML = `
         <td><strong>TOTALES</strong></td>
         <td><strong>${sumaValores}</strong></td>
         <td><strong>${sumaMaximos}</strong></td>
@@ -127,62 +222,83 @@
         <td></td>
         <td><strong>${sumaGlobal.toFixed(2)}%</strong></td>
       `;
-    }
 
-    form.addEventListener('input', () => {
-      const inputs = document.querySelectorAll('.calificacion-input');
-      let total = 0;
-
-      inputs.forEach(input => {
-        const value = parseInt(input.value || 0);
-        if (value < 0) input.value = 0;
-        if (value > 3) input.value = 3;
-        total += parseInt(input.value || 0);
-      });
-
-      totalSpan.textContent = total;
-      porcentajeCumplimientoSpan.textContent = `${calcularPorcentaje(total)}%`;
-    });
-
-    form.addEventListener('submit', (event) => {
-      event.preventDefault();
-
-      const totalCalificaciones = parseInt(totalSpan.textContent);
-      const porcentajeCumplimiento = calcularPorcentaje(totalCalificaciones);
-
-      let historial = JSON.parse(localStorage.getItem('historialEvaluaciones')) || [];
-
-      // Buscar si el aspecto ya está en el historial
-      const aspectoExistente = historial.find(entry => entry.aspecto === "{{ aspecto.nombre }}");
-
-      if (aspectoExistente) {
-        // Actualizar los valores del aspecto existente
-        aspectoExistente.total = totalCalificaciones;
-        aspectoExistente.porcentaje = porcentajeCumplimiento;
-      } else {
-        // Agregar un nuevo registro al historial
-        historial.push({
-          aspecto: "{{ aspecto.nombre }}",
-          total: totalCalificaciones,
-          maximo: puntajeMaximo,
-          porcentaje: porcentajeCumplimiento
-        });
+        // Cargar la sumaGlobal en el input de Resultado Global
+        resultadoGlobalInput.value = sumaGlobal.toFixed(2);
+        resultadoGlobalInput2.value = sumaGlobal.toFixed(2), '%';
       }
 
-      // Guardar en localStorage
-      localStorage.setItem('historialEvaluaciones', JSON.stringify(historial));
+      form.addEventListener('input', () => {
+        const inputs = document.querySelectorAll('.calificacion-input');
+        let total = 0;
 
+        inputs.forEach(input => {
+          const value = parseInt(input.value || 0);
+          if (value < 0) input.value = 0;
+          if (value > 3) input.value = 3;
+          total += parseInt(input.value || 0);
+        });
+
+        totalSpan.textContent = total;
+        porcentajeCumplimientoSpan.textContent = `${calcularPorcentaje(total)}%`;
+      });
+
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+
+        const totalCalificaciones = parseInt(totalSpan.textContent);
+        const porcentajeCumplimiento = calcularPorcentaje(totalCalificaciones);
+
+        let historial = JSON.parse(localStorage.getItem('historialEvaluaciones')) || [];
+
+        // Buscar si el aspecto ya está en el historial
+        const aspectoExistente = historial.find(entry => entry.aspecto === "{{ aspecto.nombre }}");
+
+        if (aspectoExistente) {
+          // Actualizar los valores del aspecto existente
+          aspectoExistente.total = totalCalificaciones;
+          aspectoExistente.porcentaje = porcentajeCumplimiento;
+        } else {
+          // Agregar un nuevo registro al historial
+          historial.push({
+            aspecto: "{{ aspecto.nombre }}",
+            total: totalCalificaciones,
+            maximo: puntajeMaximo,
+            porcentaje: porcentajeCumplimiento
+          });
+        }
+
+        // Guardar en localStorage
+        localStorage.setItem('historialEvaluaciones', JSON.stringify(historial));
+
+        cargarHistorial();
+
+        alert('Calificaciones guardadas exitosamente en el historial.');
+      });
+
+      // Cargar historial al cargar la página
       cargarHistorial();
-
-      alert('Calificaciones guardadas exitosamente en el historial.');
     });
+  </script>
 
-    // Cargar historial al cargar la página
-    cargarHistorial();
-  });
-</script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const tabs = document.querySelectorAll('.tab');
+      const panes = document.querySelectorAll('.tab-pane');
+
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          // Eliminar clase activa de todas las pestañas y panes
+          tabs.forEach(t => t.classList.remove('active'));
+          panes.forEach(p => p.classList.remove('active'));
+
+          // Activar la pestaña y el panel correspondiente
+          tab.classList.add('active');
+          document.getElementById(tab.dataset.target).classList.add('active');
+        });
+      });
+    });
+  </script>
 
 
-
-
-{% endblock %}
+  {% endblock %}
