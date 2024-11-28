@@ -3,7 +3,7 @@
 {% block content %}
 
 <div class="container-preguntas">
-  <h1>Preguntas para el Aspecto: {{ aspecto.nombre }} - Software: ({{ nombresoftware }})</h1>
+  <h1>Preguntas para el Aspecto: {{ aspecto.nombre }}</h1>
   <p>{{ aspecto.descripcion }}</p>
 
   <!-- Mostrar preguntas existentes con inputs de calificación -->
@@ -31,8 +31,6 @@
       </tbody>
     </table>
 
-    <a href="{{ url_for('aspectos_user.listar_aspectos_user', nombresoftware=nombresoftware) }}"><button
-        class="button-list">Volver</button></a>
     <div>
       <p>Total Calificaciones: <span id="total-calificaciones">0</span></p>
       <p>Puntaje Máximo: <span id="puntaje-maximo">{{ preguntas|length * 3 }}</span></p>
@@ -66,12 +64,11 @@
       </tfoot>
     </table>
 
+
   </div>
 
   <a href="{{ url_for('aspectos_user.listar_aspectos_user') }}">
     <button class="button-list">Volver</button>
-    <!-- Botón Terminar Evaluación -->
-    <button id="btn-terminar-evaluacion">Terminar Evaluación</button>
   </a>
 </div>
 
@@ -184,42 +181,6 @@
     cargarHistorial();
   });
 </script>
-
-<script>
-  document.getElementById('btn-terminar-evaluacion').addEventListener('click', async () => {
-    const resultadoglobal = parseFloat(document.getElementById('total-global-row').querySelector('td:last-child').textContent) || 0;
-    const idevaluacion = /* Obtener el ID de la evaluación actual (por ejemplo, almacenado en sesión o data attribute) */;
-
-    if (!idevaluacion) {
-      alert("No se pudo identificar la evaluación actual.");
-      return;
-    }
-
-    try {
-      const response = await fetch('/actualizar_resultadoglobal', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          idevaluacion: idevaluacion,
-          resultadoglobal: resultadoglobal,
-        }),
-      });
-
-      const data = await response.json();
-      if (data.success) {
-        alert('Resultado final guardado exitosamente.');
-      } else {
-        alert('Error al guardar el resultado final.');
-      }
-    } catch (error) {
-      console.error('Error en la solicitud:', error);
-      alert('Ocurrió un error al comunicarse con el servidor.');
-    }
-  });
-</script>
-
 
 
 
