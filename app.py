@@ -9,7 +9,7 @@ from services.dashboard import dashboard_bp
 from services.dashboard_user import dashboard_user_bp
 from services.registrar_software import registrar_software_bp
 from datetime import datetime
-
+from services.matriz_riesgo import matriz_riesgo_bp
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -31,7 +31,8 @@ app.register_blueprint(dashboard_user_bp, url_prefix='/dashboard_user')
 app.register_blueprint(aspectos_user_bp, url_prefix="/aspectos_user") 
 app.register_blueprint(auth, url_prefix="/auth")
 #####################################
-
+# Registrar el Blueprint
+app.register_blueprint(matriz_riesgo_bp, url_prefix='/matriz_riesgo')
 
 # Rutas protegidas para el administrador
 @app.route('/dashboard_admin')

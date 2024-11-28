@@ -1,0 +1,75 @@
+{% extends 'base_user.html' %}
+
+{% block content %}
+
+<div class="container-matriz">
+  <h1>Matiz de Riesgo</h1>
+
+  <!-- Mostrar la matriz de riesgo si existen registros -->
+  <h2>Evaluación de Riesgo</h2>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Descripción del Riesgo</th>
+        <th>Fase Afectada</th>
+        <th>Causa Raíz</th>
+        <th>Entregables Afectados</th>
+        <th>Objetivo Afectado</th>
+        <th>Probabilidad</th>
+        <th>Impacto</th>
+        <th>Nivel de Riesgo</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for riesgo in matriz %}
+      <tr>
+        <td>{{ riesgo.descripcionriesgo }}</td>
+        <td>{{ riesgo.faseafectada }}</td>
+        <td>{{ riesgo.causaraiz }}</td>
+        <td>{{ riesgo.entregablesafectados }}</td>
+        <td>{{ riesgo.objetivoafectado }}</td>
+        <td>{{ riesgo.estimacionprobabilidad }}</td>
+        <td>{{ riesgo.estimacionimpacto }}</td>
+        <td>{{ riesgo.nivelriesgo }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <!-- Formulario para agregar una nueva fila a la matriz de riesgo -->
+  <h3>Agregar nuevo riesgo</h3>
+  <form method="POST">
+    <div class="form-group">
+      <label for="descripcion_riesgo">Descripción del Riesgo</label>
+      <textarea class="form-control" id="descripcion_riesgo" name="descripcion_riesgo" rows="3" required></textarea>
+    </div>
+    <div class="form-group">
+      <label for="fase_afectada">Fase Afectada</label>
+      <input type="text" class="form-control" id="fase_afectada" name="fase_afectada" required>
+    </div>
+    <div class="form-group">
+      <label for="causa_raiz">Causa Raíz</label>
+      <textarea class="form-control" id="causa_raiz" name="causa_raiz" rows="3" required></textarea>
+    </div>
+    <div class="form-group">
+      <label for="entregables_afectados">Entregables Afectados</label>
+      <textarea class="form-control" id="entregables_afectados" name="entregables_afectados" rows="3"></textarea>
+    </div>
+    <div class="form-group">
+      <label for="objetivo_afectado">Objetivo Afectado</label>
+      <input type="text" class="form-control" id="objetivo_afectado" name="objetivo_afectado">
+    </div>
+    <div class="form-group">
+      <label for="estimacion_probabilidad">Estimación de Probabilidad (1-5)</label>
+      <input type="number" class="form-control" id="estimacion_probabilidad" name="estimacion_probabilidad" min="1"
+        max="5" required>
+    </div>
+    <div class="form-group">
+      <label for="estimacion_impacto">Estimación de Impacto (1-5)</label>
+      <input type="number" class="form-control" id="estimacion_impacto" name="estimacion_impacto" min="1" max="5"
+        required>
+    </div>
+    <button type="submit" class="button-list">Agregar Riesgo</button>
+  </form>
+</div>
+{% endblock %}

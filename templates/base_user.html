@@ -1,31 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
-    <title> Dashboard {{ user_role }}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/aspectos.css') }}">
+  <title> Dashboard {{ user_role }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles/aspectos.css') }}">
 </head>
+
 <body>
-    <header>
-        <div class="container">
-          <h4 class="logo">User</h4>
-    
-          <nav>
-            <ul>
-              <li><a href="{{ url_for('dashboard_user') }}">Home</a></li>
-              <li><a href="{{ url_for('dashboard_user') }}">Historial</a></li>
-              <li><a href="{{ url_for('auth.logout') }}">Cerrar Sesión</a></li>
-            </ul>
-          </nav>
-        </div>
-      </header>
-      <div class="container-dashboard">
-        {% block content %}
-        {% endblock %}
-        </div>
+  <header>
+    <div class="container">
+      <h4 class="logo">User</h4>
 
-      </div>
+      <nav>
+        <ul>
+          <li><a href="{{ url_for('dashboard_user') }}">Home</a></li>
+          <li><a href="{{ url_for('dashboard_user') }}">Historial</a></li>
+          <li><a href="{{ url_for('auth.logout') }}">Cerrar Sesión</a></li>
+          <li><a href="{{ url_for('matriz_riesgo.matriz_riesgo') }}">MAtriz de riesgo</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <div class="container-dashboard">
+    {% block content %}
+    {% endblock %}
+  </div>
 
-    
+  </div>
+
+
 </body>
+
 </html>

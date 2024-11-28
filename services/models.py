@@ -117,3 +117,25 @@ def get_questions_by_model(idmodelo):
         .all()
     )
     return preguntas
+
+
+class MatrizRiesgo(db.Model):
+    __tablename__ = 'matrizriesgo'
+
+    # Definimos las columnas de la tabla
+    idmatriz = db.Column(db.Integer, primary_key=True)
+    idevaluacion = db.Column(db.Integer, db.ForeignKey('evaluacion.idevaluacion'), nullable=False)
+    descripcionriesgo = db.Column(db.Text, nullable=False)
+    faseafectada = db.Column(db.String(50), nullable=False)
+    causaraiz = db.Column(db.Text, nullable=False)
+    entregablesafectados = db.Column(db.Text, nullable=True)
+    objetivoafectado = db.Column(db.String(50), nullable=True)
+    estimacionprobabilidad = db.Column(db.Integer, nullable=False)
+    estimacionimpacto = db.Column(db.Integer, nullable=False)
+    nivelriesgo = db.Column(db.String(20), nullable=True)
+
+    # Relación con la tabla Evaluacion
+    evaluacion = db.relationship('Evaluacion', backref='matricesriesgo', lazy=True)
+
+    def _repr_(self):
+        return f"<MatrizRiesgo id={self.idmatriz}, Evaluacion={self.idevaluacion}>"
